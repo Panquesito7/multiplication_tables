@@ -1,150 +1,112 @@
 /**
  * @file
- * @brief [Multiplication tables](https://en.wikipedia.org/wiki/Multiplication_table) for any number
+ * @brief [Multiplication Table](https://en.wikipedia.org/wiki/Multiplication_table) for any number.
+ * Provides a self-test mode using `assert` and an interactive mode which lets you choose any number.
  *
  * @author [David Leal](https://github.com/Panquesito7)
  */
 
-#include <iostream>
-#include <cstring>
-#include <cstdio>
-#include <cstdlib>
+#include <iostream>   /// for IO operations
+#include <cassert>    /// for assert
+#include <cmath>      /// for std::fabs
+#include <limits>     /// for std::numeric_limits
 
 /**
- * Prototypes
+ * @namespace
+ * @brief Function for the Multiplication Table implementation
  */
-void askData(int&);
-void show_tables(int&);
-void pause(int);
-void license_notice();
-
+namespace multiplication_tables {
 /**
- * Main function
+ * @brief Asks the user a number and maximum value (e.g.: 10)
+ * and prints the given number's multiplication until `maximum_value`.
+ * @tparam T the type that will be used for the variables
+ * @param number The number that will be used
+ * @param maximum_value The maximum number of times the given number will be multiplicated (e.g.: 10)
+ * @returns void
  */
-int main() {
-    int number = 0;
+template <typename T>
+void ask_number(T number, T maximum_value) {
+    std::cout << "Please enter a number: ";
+    std::cin >> number;
 
-    askData(number);
-    show_tables(number); std::cout << "\n";
+    std::cout << "Please enter maximum number of times the number will be multiplicated: ";
+    std::cin >> maximum_value;
 
-    pause(1);
-    return 0;
+    std::cout << "\n";
+
+    for (int i = 1; i < maximum_value + 1; i++) {
+        std::cout << number << " * " << i << " = " << number * i << "\n";
+    }
 }
 
 /**
- * Press ENTER to continue (pause)
- * @param opt show message or not
- * @return void
+ * @brief Function that returns a number multiplied by the given value.
+ * Very useful for creating self-test with `assert`.
+ * @tparam T the type that will be used for the variables
+ * @param number The number that will be multiplied
+ * @param multiplication_number The value that will be multiplied to the given number
+ * @returns the multiplication of the number and the given multiplication value
  */
-void pause(int opt) {
-    rewind(stdin);
-    if (opt == 1) {
-        std::cout << "Press ENTER key to continue . . .";
-        std::cin.get();
+double number_multiplication(double number, double multiplication_number) {
+    return number * multiplication_number;
+}
+
+/**
+ * @brief Checks if two doubles are equal.
+ * @param a First number to check
+ * @param b Second number to check
+ * @param epsilon The maximum difference between a and b for them to be considered equal
+ * @return true if `a` and `b` are equal
+ * @return false if `a` and `b` are NOT equal
+ */
+bool are_equal(double a, double b, double epsilon = std::numeric_limits<double>::epsilon()) {
+    return std::fabs(a - b) <= epsilon;
+}
+}  // namespace multiplication_tables
+
+/**
+ * @brief Self-test implementations
+ * @returns void
+ */
+static void tests() {
+    assert(multiplication_tables::are_equal(multiplication_tables::number_multiplication(64, 2), 128));
+    assert(multiplication_tables::are_equal(multiplication_tables::number_multiplication(2, 2.6), 5.2));
+    assert(multiplication_tables::are_equal(multiplication_tables::number_multiplication(28, 7), 196));
+    assert(multiplication_tables::are_equal(multiplication_tables::number_multiplication(3, 3), 9));
+    assert(multiplication_tables::are_equal(multiplication_tables::number_multiplication(474, 600), 284400));
+    assert(multiplication_tables::are_equal(multiplication_tables::number_multiplication(4, 4), 16));
+    assert(multiplication_tables::are_equal(multiplication_tables::number_multiplication(15, 12), 180));
+
+    std::cout << "All tests have successfully passed!\n";
+}
+
+/**
+ * @brief Main function
+ * @returns 0 on exit
+ */
+int main() {
+    int choice = 0;
+
+    do {
+        std::cout << "1. Interactive mode.\n";
+        std::cout << "2. Self-test mode.\n";
+
+        std::cout << "Choose mode: ";
+        std::cin >> choice;
+
+        std::cout << "\n";
+    } while ((choice < 1) || (choice > 2));
+
+    if (choice == 1) {
+        std::cout << "\n";
+
+        int number = 0, maximum_value = 0;
+        multiplication_tables::ask_number(number, maximum_value);
     }
 
     else {
-        std::cin.get();
+        tests();  // run self-test implementations
     }
-}
 
-/**
- * [GNU GPL](http://www.gnu.org/licenses/gpl-3.0.html) license notice
- */
-void license_notice() {
-    char opt[10];
-    do {
-        std::cout << "Multiplication tables\n"
-            "Copyright (C) 2020 David Leal (halfpacho@gmail.com)\n\n"
-
-            "This program comes with ABSOLUTELY NO WARRANTY;"
-            " for details type `show w`.\n"
-            "This is free software, and you are welcome to redistribute it\n"
-            "under certain conditions; type `show c` for details.\n"
-            "\nType `exit` to go to the main program: ";
-
-        std::cin.getline(opt, 10, '\n');
-
-        if (opt[5] == 'w') {
-            std::cout << "\nTHERE IS NO WARRANTY FOR THE PROGRAM, "
-                "TO THE EXTENT PERMITTED BY\n"
-                "APPLICABLE LAW. EXCEPT WHEN OTHERWISE "
-                "STATED IN WRITING THE COPYRIGHT\n"
-                "HOLDERS AND / OR OTHER PARTIES PROVIDE THE "
-                "PROGRAM \"AS IS\" WITHOUT WARRANTY\n"
-                "OF ANY KIND, EITHER EXPRESSED OR IMPLIED, "
-                "INCLUDING, BUT NOT LIMITED TO,\n"
-                "THE IMPLIED WARRANTIES OF MERCHANTABILITY "
-                "AND FITNESS FOR A PARTICULAR\n"
-                "PURPOSE. THE ENTIRE RISK AS TO THE "
-                "QUALITY AND PERFORMANCE OF THE PROGRAM\n"
-                "IS WITH YOU. SHOULD THE PROGRAM PROVE "
-                "DEFECTIVE, YOU ASSUME THE COST OF\n"
-                "ALL NECESSARY SERVICING, REPAIR OR CORRECTION.\n\n";
-
-            pause(0);
-
-        }
-        else if (opt[5] == 'c') {
-            std::cout << "\nWhen we speak of free software, "
-                "we are referring to freedom, not\n"
-                "price.  Our General Public Licenses are "
-                "designed to make sure that you\n"
-                "have the freedom to distribute copies "
-                "of free software (and charge for\n"
-                "them if you wish), that you receive source "
-                "code or can get it if you\n"
-                "want it, that you can change the software "
-                "or use pieces of it in new\n"
-                "free programs, and that you know you can do these things.\n"
-
-                "\nTo protect your rights, we need to "
-                "prevent others from denying you\n"
-                "these rights or asking you to surrender "
-                "the rights. Therefore, you have\n"
-                "certain responsibilities if you distribute "
-                "copies of the software, or if\n"
-                "you modify it : responsibilities to "
-                "respect the freedom of others.\n"
-
-                "\nFor example, if you distribute copies of "
-                "such a program, whether\n"
-                "gratis or for a fee, you must pass on "
-                "to the recipients the same\n"
-                "freedoms that you received. You must make "
-                "sure that they, too, receive\n"
-                "or can get the source code. And you must "
-                "show them these terms so they\n"
-                "know their rights.\n\n";
-
-            pause(0);
-        }
-
-        system("cls");
-        if ((opt[5] == 'w') || (opt[5] == 'c')) {
-            strcpy(opt, "");
-        }
-    } while (opt[0] != 'e');
-}
-
-/**
- * Ask number to user
- * @param number number for the user to type
- * @return void
- */
-void askData(int &number) {
-    std::cout << "Please type a number: ";
-    std::cin >> number;
-}
-
-/**
- * Show multiplication tables
- * @param number multiplication table to show
- * @return void
- */
-void show_tables(int &number) {
-    std::cout << "\n";
-    for (int i = 1; i <= 10; i++) {
-        std::cout << number << " * " << i << " = " << number * i << std::endl;
-    }
+    return 0;
 }
