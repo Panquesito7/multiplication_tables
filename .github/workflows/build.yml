@@ -16,5 +16,5 @@ jobs:
           choco install mingw
       - name: Build
         run: |
-          g++ -o multiplication_tables ./src/multiplication_tables.cpp
+          g++ -std=c++11 -o multiplication_tables ./src/multiplication_tables.cpp
           echo 2 | ./multiplication_tables
