@@ -14,7 +14,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           choco install mingw
-      - name: Build
+      - name: Build and run program
         run: |
           g++ -std=c++11 -o multiplication_tables ./src/multiplication_tables.cpp
           echo 2 | ./multiplication_tables
