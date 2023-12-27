@@ -1,21 +1,3 @@
-/**
- * Shows the multiplication tables for any number with interactive and self-tests mode.
- * Copyright (C) 2020-2023 David Leal (halfpacho@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 #include <iostream>   /// for IO operations
 #include <cassert>    /// for assert
 #include <cmath>      /// for std::fabs
@@ -62,7 +44,8 @@ double number_multiplication(double number, double multiplication_number) {
 }
 
 /**
- * @brief Checks if two doubles are equal.
+ * @brief Checks if two doubles are equal. This is done because there might
+ * be very minor value differences that will cause the `assert` checks to fail.
  * @param a First number to check
  * @param b Second number to check
  * @param epsilon The maximum difference between a and b for them to be considered equal
